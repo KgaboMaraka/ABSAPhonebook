@@ -3,8 +3,10 @@
 Instructions to run the projects locally
 
 Please create a database(SQL Server) and name it "Phonebook"
+
 Run the scripts found at the below location to create tables. Please run the Phonebook.sql script first
 https://github.com/KgaboMaraka/ABSAPhonebook/tree/master/PhonebookAPI/SQL%20Scripts
+
 Update the API connection string with your SQL server instance
 
 Nuget Packages to install
