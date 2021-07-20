@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using PhonebookApp.Models;
+
+<!DOCTYPE html>
+
+@model IEnumerable<Entry>
+
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+</head>
+<body>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Contact List</h3>
+                    </div>
+                    <div>
+                        @using (Html.BeginForm())
+                        {
+                            <p>
+                                Enter Name, Number or Phonebook name: @Html.TextBox("SearchString", null, new { @class = "form-control", style = "display:table-cell" })
+                                <input type="submit" value="Search" class="btn btn-default" />
+                            </p>}
+                    </div>
+                    <div class="box-body">
+                        <table id="tbList" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Phonebook</th>
+                                    <th>Name</th>
+                                    <th>Phone Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(module => item.Phonebook.Name)</td>
+                                        <td>@Html.DisplayFor(module => item.Name)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br />
+    <p>
+        <a href="@Url.Action("Add", "Entry")" class="btn btn-default"><i class="fa fa-plus"></i> Add Entry</a>
+        <a href="@Url.Action("Add", "Phonebook")" class="btn btn-default"><i class="fa fa-plus"></i> Add Phonebook</a>
+    </p>
+</body>
+</html>
+@section scripts{
+    <script>
+        $(function (){
+            var succesMessage = '@TempData["SuccesMessage"]'
+            if (succesMessage != '')
+                alertify.success(succesMessage);
+        });
+    </script>
+}
