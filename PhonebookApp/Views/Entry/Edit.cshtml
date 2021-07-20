@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Add";
+    ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -8,7 +8,7 @@
 
 <!DOCTYPE html>
 
-@model  Phonebook
+@model  Entry
 
 <html>
 <head>
@@ -30,20 +30,35 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="box-title"> New Phonebook</h3>
+                    <h3 class="box-title"> Edit Contact</h3>
                 </div>
                 <div class="modal-body">
                     <div class="box box-primary">
-                        @using (Html.BeginForm("Add", "Phonebook", FormMethod.Post))
+                        @using (Html.BeginForm())
                         {
-                            <div class="modal-body" style="height:250px">
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        <label for="Name">Phonebook Name</label>
-                                        <input type="text" class="form-control" id="name" name="Name" placeholder="Name" required>
-                                    </div>
+                        <div class="modal-body" style="height:250px">
+                           
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.ID)
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="Phonebook">Phonebook</label>
+                                    @Html.DropDownListFor(model => model.PhonebookID, (SelectList)ViewBag.PhonebookList, htmlAttributes: new { @class = "form-control", id = "Phonebook" })
                                 </div>
                             </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="Phonebook">Name</label>
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="Phonebook">Phone Number</label>
+                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                                 <button type="button" class="btn btn-default pull-right" onclick="@("window.location.href='" + @Url.Action("Index", "Entry") + "'")" data-dismiss="modal">Close</button>

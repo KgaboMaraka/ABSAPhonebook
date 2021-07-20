@@ -41,10 +41,47 @@ namespace PhonebookApp.Controllers
         {
             HttpResponseMessage response = GlobalVariables.WebApiClient.PostAsJsonAsync("Entry", entry).Result;
             if (response.StatusCode == System.Net.HttpStatusCode.Created)
-                TempData["SuccesMessage"] = "Contact saved Successfully.";
+                TempData["SuccesMessage"] = "Contact added Successfully.";
             else
                 TempData["SuccesMessage"] = "Contact name and number already exist. Not saved!";
             
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Edit(int id)
+        {
+            HttpResponseMessage phonebookResponse = GlobalVariables.WebApiClient.GetAsync("Phonebook").Result;
+            IEnumerable<Phonebook> phonebookList = phonebookResponse.Content.ReadAsAsync<IEnumerable<Phonebook>>().Result;
+            ViewBag.PhonebookList = new SelectList(phonebookList, "ID", "Name");
+
+            HttpResponseMessage entryResponse = GlobalVariables.WebApiClient.GetAsync("Entry/" + id).Result;
+            Entry entry = entryResponse.Content.ReadAsAsync<Entry>().Result;
+
+            return View(entry);
+        }
+
+        // PUT: Entry/Put
+        [HttpPost]
+        public ActionResult Edit(Entry entry)
+        {
+            HttpResponseMessage response = GlobalVariables.WebApiClient.PutAsJsonAsync("Entry", entry).Result;
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                TempData["SuccesMessage"] = "Contact updated Successfully.";
+            else
+                TempData["SuccesMessage"] = "Contact not updated!";
+
+            return RedirectToAction("Index");
+        }
+
+        // DELETE: Entry/Delete
+        public ActionResult Delete(int id)
+        {
+            HttpResponseMessage response = GlobalVariables.WebApiClient.DeleteAsync("Entry/" + id).Result;
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                TempData["SuccesMessage"] = "Contact deleted Successfully.";
+            else
+                TempData["SuccesMessage"] = "Contact not deleted!";
+
             return RedirectToAction("Index");
         }
     }

@@ -34,25 +34,33 @@ namespace PhonebookAPI.Controllers
         // POST: api/Phonebook
         public HttpResponseMessage Post([FromBody]Phonebook phonebook)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var p = db.Phonebooks.Where(b => b.Name.Equals(phonebook.Name, StringComparison.OrdinalIgnoreCase)).Count();
-                if (p > 0) 
-                { 
-                    return Request.CreateErrorResponse(HttpStatusCode.Found, "A phonebook with the name: " + phonebook.Name + " already exists"); 
+                if (ModelState.IsValid)
+                {
+                    var p = db.Phonebooks.Where(b => b.Name.Equals(phonebook.Name, StringComparison.OrdinalIgnoreCase)).Count();
+                    if (p > 0) 
+                    { 
+                        return Request.CreateErrorResponse(HttpStatusCode.Found, "A phonebook with the name: " + phonebook.Name + " already exists"); 
+                    }
+
+                    db.Phonebooks.Add(phonebook);
+                    db.SaveChanges();
+
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, phonebook);
+                    response.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = phonebook.ID }));
+                    return response;
                 }
-
-                db.Phonebooks.Add(phonebook);
-                db.SaveChanges();
-
-                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, phonebook);
-                response.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = phonebook.ID }));
-                return response;
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                }
             }
-            else
+            catch (Exception)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                throw;
             }
+            
         }
 
         protected override void Dispose(bool disposing)

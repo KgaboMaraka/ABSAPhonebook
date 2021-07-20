@@ -187,6 +187,7 @@
     <Content Include="Views\Entry\Index.cshtml" />
     <Content Include="Views\Entry\Add.cshtml" />
     <Content Include="Views\Phonebook\Add.cshtml" />
+    <Content Include="Views\Entry\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

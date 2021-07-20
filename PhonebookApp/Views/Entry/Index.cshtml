@@ -10,8 +10,6 @@
 
 @model IEnumerable<Entry>
 
-
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -47,16 +45,25 @@
                                     <th>Phonebook</th>
                                     <th>Name</th>
                                     <th>Phone Number</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
-                                        <td>@Html.DisplayFor(module => item.Phonebook.Name)</td>
-                                        <td>@Html.DisplayFor(module => item.Name)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
-                                    </tr>
+                                <tr>
+                                    <td>@Html.DisplayFor(module => item.Phonebook.Name)</td>
+                                    <td>@Html.DisplayFor(module => item.Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                                    <td>
+                                        <a>
+                                            @Html.ActionLink(" ", "Edit", "Entry", new { id = item.ID }, new { @class = "fa fa-edit" })
+                                        </a>
+                                        <a>
+                                            @Html.ActionLink(" ", "Delete", "Entry", new { id = item.ID }, new { onclick = "return confirm('Are you sure you want to delete this contact?');", @class = "fa fa-trash-o" })
+                                        </a>
+                                    </td>
+                                </tr>
                                 }
                             </tbody>
                             <tfoot>
